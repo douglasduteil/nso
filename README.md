@@ -2,6 +2,11 @@
 
 > npm package dependencies visualizer
 
+
+<p align="center">
+  <img alt="angular-batscanner-logo" src=".github/images/nso-logo.png" width="512">
+</p>
+
 ## Installation
 ```sh
 $ npm i

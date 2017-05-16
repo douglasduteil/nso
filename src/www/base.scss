@@ -3,9 +3,11 @@ html, body {
   padding: 0;
   font-family: Arial,sans-serif;
   height: 100%;
+  display: flex;
 }
 
 body {
+  flex: 1;
   touch-action: none;
   -ms-touch-action: none;
   overflow: hidden;
@@ -15,5 +17,75 @@ body {
 .wf-active {
   &, input{
     font-family: 'Roboto', Arial,sans-serif;;
+  }
+}
+
+nso-app {
+  flex: 1;
+}
+
+#loader {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+
+  svg {
+    width: 50%;
+    min-width: 300px;
+    max-height: 500px;
+  }
+
+  @mixin loaderLayerAnim ($x) {
+   stroke: black;
+    animation-delay: $x;
+    animation: bounce $x infinite ease-in-out;
+    transform-origin: 50% 50%;
+  }
+
+  .center {
+    @include loaderLayerAnim(1s);
+  }
+
+  .layer1 {
+    @include loaderLayerAnim(2s);
+  }
+  .layer2 {
+    @include loaderLayerAnim(3s);
+  }
+  .layer3 {
+    @include loaderLayerAnim(4s);
+  }
+  .layer401 {
+    @include loaderLayerAnim(5s);
+  }
+  .layer402 {
+    @include loaderLayerAnim(6s);
+  }
+}
+
+
+$bounceVar: 1;
+@keyframes bounce {
+  from {
+    stroke-width: 1;
+  }
+
+  20% {
+     stroke-width: 1 - $bounceVar;
+  }
+
+  50%, 55% {
+     stroke-width: 1 + $bounceVar;
+  }
+
+  90% {
+     stroke-width: 1 - $bounceVar;
+  }
+
+  to {
+    stroke-width: 1;
   }
 }

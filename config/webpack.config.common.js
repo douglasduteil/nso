@@ -5,6 +5,8 @@ const { resolve } = require('path')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const { IgnorePlugin, optimize: { CommonsChunkPlugin }, ProgressPlugin } = require('webpack')
 const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 //
 
@@ -61,23 +63,14 @@ exports.default = {
 
       {
         test: /\.scss$/,
-        use: [
-          {
-            loader: "sass-loader",
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: "css-loader",
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: "style-loader"
-          }
-        ].reverse()
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          //resolve-url-loader may be chained before sass-loader if necessary
+          use: [
+            'sass-loader',
+            'css-loader'
+          ].reverse()
+        })
       }
     ]
   },
@@ -104,6 +97,17 @@ exports.default = {
     // awesome-typescript-loader plugins
     new CheckerPlugin(),
     new TsConfigPathsPlugin(),
+
+    // copy-webpack-plugin
+    new CopyWebpackPlugin([
+      {
+        from: 'src/www/assets',
+        to: 'assets'
+      }
+    ]),
+
+    // extract-text-webpack-plugin
+    new ExtractTextPlugin('[name].css'),
 
     // webpack plugins
     new CaseSensitivePathsPlugin(),
