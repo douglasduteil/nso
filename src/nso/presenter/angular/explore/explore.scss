@@ -1,8 +1,44 @@
-nso-omnibox {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  margin: 1rem;
+.nso-explore {
+
+  nso-omnibox {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    margin: 1rem;
+  }
+
+  footer {
+    display: flex;
+    position: absolute;
+    margin: 1rem;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+  }
+
+  .floating-button {
+    // overwirte "a"
+    text-decoration: none;
+    color: #666;
+
+    background-color: rgba(255,255,255,1);
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    display: block;
+    padding: 7px 8px 5px;
+    text-align: center;
+    overflow: hidden;
+    transition: background-color 0.16s ease-out;
+
+    &.active {
+      pointer-events: none;
+      color: #F44336;
+    }
+
+    & + .floating-button {
+      margin-left: .5em;
+    }
+  }
 }

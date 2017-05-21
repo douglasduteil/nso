@@ -1,4 +1,4 @@
-<div class="nso-app">
+<div class="nso-explore">
 
   <nso-omnibox>
     <input
@@ -12,4 +12,21 @@
   </nso-omnibox>
 
   <ui-view></ui-view>
+
+  <footer>
+    <a
+     class="floating-button"
+     ui-sref="explore.pkg.dependencyNetwork({pkg: $ctrl.searchTerm})"
+     ui-sref-active="active"
+    >
+       <span class="material-icons">timeline</span>
+    </a>
+    <a
+     class="floating-button"
+     ui-sref="explore.pkg.dependencyWheel({pkg: $ctrl.searchTerm})"
+     ui-sref-active="active"
+    >
+       <span class="material-icons">group_work</span>
+    </a>
+  </footer>
 </div>
