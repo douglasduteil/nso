@@ -65,7 +65,10 @@ exports.default = {
           {
             loader: "sass-loader",
             options: {
-              sourceMap: true
+              sourceMap: true,
+                options: {
+                    includePaths: [resolve(__dirname, '..')]
+                }
             }
           },
           {
