@@ -7,6 +7,7 @@ import {
 } from "@uirouter/angularjs";
 
 import { IExploreRoutingParams } from "./explore-routing.interface";
+import { ExploreEffect } from "./explorer.effect";
 
 //
 
@@ -19,6 +20,8 @@ export class ExploreController implements Ng1Controller {
 
   constructor(
     private $state: StateService,
+
+    private exploreEffect: ExploreEffect,
   ) {
     "ngInject";
   }
@@ -35,7 +38,11 @@ export class ExploreController implements Ng1Controller {
   public $onInit() {
     // When Angular initiate the component
     const params: IExploreRoutingParams = this.$transition$.params();
-    this.searchTerm = params.pkg;
+    const packageName = params.pkg;
+
+    this.searchTerm = packageName;
+
+    this.exploreEffect.resolvePackageDependencies(packageName);
   }
 
   public uiOnParamsChanged(newParams: IExploreRoutingParams) {

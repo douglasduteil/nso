@@ -20,5 +20,4 @@ export const DependencyNetworkComponentOptions: IComponentOptions = {
   },
   controller: DependencyNetworkController,
   template,
-  transclude: true,
 };

@@ -9,12 +9,11 @@ import * as d3 from "d3";
 
 import {
   IData,
-  ILinkDatum,
-  INode,
-  INodeDatum,
 } from "nso/models";
 
+import { Subject } from "rxjs/Subject";
 import { IRawData } from "./dependencyWheel.mocks";
+
 //
 
 const INNER_RADIUS_RATIO: number = 0.875;
@@ -22,7 +21,7 @@ const BUNDLE_STRENGTH_RATIO: number = 0.95;
 const DIAMETER: number = Math.min(window.innerHeight, window.innerWidth) * INNER_RADIUS_RATIO;
 export class DependencyWheelController implements IController {
 
-  public vertex: IData;
+  public vertex: Subject<IData>;
   private diameter = DIAMETER;
   private radius = this.diameter / 2;
   private innerRadius = this.radius * INNER_RADIUS_RATIO;
@@ -48,9 +47,16 @@ export class DependencyWheelController implements IController {
     private $element: IAugmentedJQuery,
   ) {
     "ngInject";
+    console.log("new DependencyWheelController");
   }
 
   //
+
+  public $onInit() {
+    this.vertex.subscribe((data) => {
+      this.update(data);
+    });
+  }
 
   public $onChanges(onChangesObj: IOnChangesObject) {
     if (!this.cluster) {
@@ -59,7 +65,10 @@ export class DependencyWheelController implements IController {
     }
 
     console.log("vertex", this.vertex);
-    const remainingNodes = this.vertex.nodes.reduce((memo, {label, id}) => {
+  }
+
+  public update(vertex: IData) {
+    const remainingNodes = vertex.nodes.reduce((memo, {label, id}) => {
       memo[label] = -1;
       return memo;
     }, {} as {[label: string]: number});
@@ -73,10 +82,10 @@ export class DependencyWheelController implements IController {
 
       return memo.push(rawData);
     };
-    const formatedData = this.vertex.edges.reduce((memo, edge) => {
+    const formatedData = vertex.edges.reduce((memo, edge) => {
 
-      const fromNode = this.vertex.nodes.find(findById(edge.from));
-      const toNode = this.vertex.nodes.find(findById(edge.to));
+      const fromNode = vertex.nodes.find(findById(edge.from));
+      const toNode = vertex.nodes.find(findById(edge.to));
 
       let fromNodeIndex = remainingNodes[fromNode.label];
       if (fromNodeIndex < 0) {
@@ -203,7 +212,7 @@ function packageHierarchy(classes: IRawData[]) {
 
   classes.forEach((d) => { find(d.name, d as any); });
 
-  return d3.hierarchy(map[""]);
+  return d3.hierarchy<IHierarchicalNode>(map[""] || {} as IHierarchicalNode);
 }
 
 // Return a list of imports for the given array of nodes.

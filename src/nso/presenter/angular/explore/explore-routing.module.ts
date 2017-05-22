@@ -2,7 +2,6 @@
 
 import AngularUiRouterModule, {
   StateProvider,
-  Transition,
   UrlRouter,
 } from "@uirouter/angularjs";
 import { module as ngModule } from "angular";
@@ -17,7 +16,7 @@ import {
   DependencyNetworkComponentName,
   DependencyWheelComponentName,
 } from "nso/presenter/angular/shared";
-import { IExploreRoutingParams } from "./explore-routing.interface";
+import { ExploreStore } from "./explore.store";
 
 //
 
@@ -33,20 +32,12 @@ export const ExploreRoutingModule: string = ngModule(module.id, [
 function stateProviderConfig($stateProvider: StateProvider) {
   "ngInject";
 
-  const vertexResolver: ($transition$: Transition) => Promise<IData> = (
-    // TODO(@douglasduteil): inject a vertex getter
-    $transition$: Transition,
+  const vertexResolver = (
+    exploreStore: ExploreStore,
   ) => {
     "ngInject";
-    const params: IExploreRoutingParams = $transition$.params();
-    const graphDatas: IData = { nodes: new Array<INode>(), edges: new Array<IEdge>() };
 
-    return GraphDatas.processGraphDatas(params.pkg, graphDatas)
-      // .then(() => {
-      //   console.log("ALL DONE !", ...arguments);
-      //   console.log("processGraphDatas", graphDatas);
-      // })
-      .then(() => graphDatas);
+    return exploreStore.vertex$;
   };
 
   $stateProvider.state({
