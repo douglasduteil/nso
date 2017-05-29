@@ -17,3 +17,71 @@ body {
     font-family: 'Roboto', Arial,sans-serif;;
   }
 }
+
+#loader {
+  // from https://codepen.io/Siddharth11/pen/xbGrpG?editors=0100
+  $c1: hsla(210, 29%, 50%, 1);
+  $c2: rgba(52, 73, 94,1.0);
+
+  @mixin lmd {
+    border-radius: 50%;
+    padding: 10px;
+    border: 1px solid transparent;
+    animation:
+      rotate linear 10s infinite,
+      hue 60s infinite linear;
+  }
+
+  @keyframes rotate {
+      0% {
+          transform: rotate(0deg);
+      }
+      50% {
+          transform: rotate(180deg);
+      }
+      100% {
+          transform: rotate(360deg);
+      }
+  }
+
+  @keyframes hue {
+    from {
+      filter: hue-rotate(0deg);
+    }
+
+    to {
+      filter: hue-rotate(-360deg);
+    }
+  }
+
+  width: 50vw;
+  height: 50vw;
+  overflow: hidden;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  > h1 {
+    position: absolute;
+    top: calc(2.25 * 25vw / 3);
+    left: calc(2.25 * 25vw / 3);
+  }
+
+  & div{
+    @include lmd;
+    margin: auto;
+    border-top-color: $c1;
+    border-left-color: $c2;
+    animation-timing-function: cubic-bezier(.55, .38, .21, .88);
+	  will-change: transform;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  div:hover {
+    animation-play-state: paused;
+  }
+}
